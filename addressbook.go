@@ -17,12 +17,12 @@ func (addressBook *Addressbook) Add(contact Contact) {
 	addressBook.Contacts = append(addressBook.Contacts, contact)
 }
 
-func (addressBook *Addressbook) Find(name string) []Contact {
+func (addressBook *Addressbook) Find(nameOrEmail string) []Contact {
 	var foundContacts = []Contact{}
 	for i := 0; i < len(addressBook.Contacts); i++ {
-		if addressBook.Contacts[i].Name == name {
-			foundContacts =
-				append(foundContacts, addressBook.Contacts[i])
+		contact := addressBook.Contacts[i]
+		if contact.Name == nameOrEmail || contact.Email == nameOrEmail {
+			foundContacts = append(foundContacts, contact)
 		}
 	}
 

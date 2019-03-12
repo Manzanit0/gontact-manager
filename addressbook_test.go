@@ -33,12 +33,28 @@ func TestAddContact(t *testing.T) {
 	}
 }
 
-func TestFindContact(t *testing.T) {
+func TestFindContactByName(t *testing.T) {
 	addressbook := new(Addressbook)
 	contact := New("name", "email")
 	addressbook.Add(contact)
 
 	found := addressbook.Find("name")
+
+	if len(found) != 1 {
+		t.Errorf("Wrong amount of contacts found")
+	}
+
+	if found[0].Name != "name" {
+		t.Errorf("Wrong contact found")
+	}
+}
+
+func TestFindContactByEmail(t *testing.T) {
+	addressbook := new(Addressbook)
+	contact := New("name", "email")
+	addressbook.Add(contact)
+
+	found := addressbook.Find("email")
 
 	if len(found) != 1 {
 		t.Errorf("Wrong amount of contacts found")
