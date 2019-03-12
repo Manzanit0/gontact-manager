@@ -1,27 +1,22 @@
 package gontact
 
 type Contact struct {
-	name  string
-	email string
+	Name  string
+	Email string
 }
 
 type Addressbook struct {
-	contacts []Contact
+	Contacts []Contact
 }
 
-func New_Contact(name, email string) *Contact {
-	c := new(Contact)
-	c.name = name
-	c.email = email
-	return c
+func New(name, email string) Contact {
+	return Contact{name, email}
 }
 
-func Add_Contact(a *Addressbook, c *Contact) *Addressbook {
-	if a.contacts == nil {
-		a.contacts = make([]Contact, 0)
+func AddContact(addressBook *Addressbook, contact Contact) {
+	if addressBook.Contacts == nil {
+		addressBook.Contacts = make([]Contact, 0)
 	}
 
-	new_list := append(a.contacts, *c)
-	a.contacts = new_list
-	return a
+	addressBook.Contacts = append(addressBook.Contacts, contact)
 }
