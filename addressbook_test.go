@@ -40,11 +40,11 @@ func TestFindContact(t *testing.T) {
 
 	found := addressbook.Find("name")
 
-	if found == nil {
-		t.Errorf("No contact found")
+	if len(found) != 1 {
+		t.Errorf("Wrong amount of contacts found")
 	}
 
-	if found.Name != "name" {
+	if found[0].Name != "name" {
 		t.Errorf("Wrong contact found")
 	}
 }
@@ -56,7 +56,7 @@ func TestNotFoundContact(t *testing.T) {
 
 	found := addressbook.Find("wrong name")
 
-	if found != nil {
-		t.Errorf("No contact should be found")
+	if len(found) > 0 {
+		t.Errorf("A contact has ben found")
 	}
 }
