@@ -13,10 +13,16 @@ func New(name, email string) Contact {
 	return Contact{name, email}
 }
 
-func AddContact(addressBook *Addressbook, contact Contact) {
-	if addressBook.Contacts == nil {
-		addressBook.Contacts = make([]Contact, 0)
+func (addressBook *Addressbook) Add(contact Contact) {
+	addressBook.Contacts = append(addressBook.Contacts, contact)
+}
+
+func (addressBook *Addressbook) Find(name string) *Contact {
+	for i := 0; i < len(addressBook.Contacts); i++ {
+		if addressBook.Contacts[i].Name == name {
+			return &addressBook.Contacts[i]
+		}
 	}
 
-	addressBook.Contacts = append(addressBook.Contacts, contact)
+	return nil
 }

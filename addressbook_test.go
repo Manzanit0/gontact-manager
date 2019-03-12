@@ -18,7 +18,7 @@ func TestAddContact(t *testing.T) {
 	addressbook := new(Addressbook)
 	contact := New("name", "email")
 
-	AddContact(addressbook, contact)
+	addressbook.Add(contact)
 
 	if addressbook.Contacts == nil {
 		t.Errorf("The addressbook hasn't been initialized")
@@ -30,5 +30,33 @@ func TestAddContact(t *testing.T) {
 
 	if addressbook.Contacts[0].Name != "name" {
 		t.Errorf("The contact has the data wrong")
+	}
+}
+
+func TestFindContact(t *testing.T) {
+	addressbook := new(Addressbook)
+	contact := New("name", "email")
+	addressbook.Add(contact)
+
+	found := addressbook.Find("name")
+
+	if found == nil {
+		t.Errorf("No contact found")
+	}
+
+	if found.Name != "name" {
+		t.Errorf("Wrong contact found")
+	}
+}
+
+func TestNotFoundContact(t *testing.T) {
+	addressbook := new(Addressbook)
+	contact := New("name", "email")
+	addressbook.Add(contact)
+
+	found := addressbook.Find("wrong name")
+
+	if found != nil {
+		t.Errorf("No contact should be found")
 	}
 }
