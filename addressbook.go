@@ -1,4 +1,4 @@
-package gontact
+package main
 
 import "errors"
 
