@@ -26,7 +26,7 @@ func (addressBook *Addressbook) Add(contact Contact) (string, error) {
 }
 
 func (addressBook *Addressbook) Find(nameOrEmail string) []Contact {
-	var foundContacts = []Contact{}
+	var foundContacts []Contact
 	for i := 0; i < len(addressBook.Contacts); i++ {
 		contact := addressBook.Contacts[i]
 		if contact.Name == nameOrEmail || contact.Email == nameOrEmail {
