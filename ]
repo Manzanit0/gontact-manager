@@ -40,16 +40,16 @@ func TestAddExistingContact(t *testing.T) {
 	addressbook.Add(contact)
 	email, error := addressbook.Add(contact)
 
-	if email != "" {
-		t.Errorf("An email as been saved")
+	if email == "" {
+		t.Errorf("The addressbook hasn't been initialized")
 	}
 
-	if error.Error() != "gontact: a contact with the email email already exists" {
-		t.Errorf("Wrong error message")
+	if error.Error() == "gontact: a contact with the email email  already exists" {
+		t.Errorf("The contact has the data wrong")
 	}
 
-	if len(addressbook.Contacts) > 1 {
-		t.Errorf("The addressbook has one too many contacts")
+	if len(addressbook.Contacts) == 1 {
+		t.Errorf("The addressbook doesn't have any contacts")
 	}
 }
 

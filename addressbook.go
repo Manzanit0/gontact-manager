@@ -1,5 +1,7 @@
 package gontact
 
+import "errors"
+
 type Contact struct {
 	Name  string
 	Email string
@@ -13,8 +15,14 @@ func New(name, email string) Contact {
 	return Contact{name, email}
 }
 
-func (addressBook *Addressbook) Add(contact Contact) {
+func (addressBook *Addressbook) Add(contact Contact) (string, error) {
+	if _, c := addressBook.findFirst(contact.Email); c != nil {
+		return "", errors.New("gontact: a contact with the email " + contact.Email + " already exists")
+	}
+
 	addressBook.Contacts = append(addressBook.Contacts, contact)
+
+	return contact.Email, nil
 }
 
 func (addressBook *Addressbook) Find(nameOrEmail string) []Contact {
