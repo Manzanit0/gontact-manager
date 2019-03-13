@@ -38,14 +38,14 @@ func TestAddExistingContact(t *testing.T) {
 	contact := New("name", "email")
 
 	addressbook.Add(contact)
-	email, error := addressbook.Add(contact)
+	email, err := addressbook.Add(contact)
 
 	if email != "" {
-		t.Errorf("An email as been saved")
+		t.Errorf("An email as been saved = %s", email)
 	}
 
-	if error.Error() != "gontact: a contact with the email email already exists" {
-		t.Errorf("Wrong error message")
+	if msg := err.Error(); msg != "gontact: a contact with the email email already exists" {
+		t.Errorf("Wrong error message = %s", msg)
 	}
 
 	if len(addressbook.Contacts) > 1 {
@@ -60,12 +60,12 @@ func TestFindContactByName(t *testing.T) {
 
 	found := addressbook.Find("name")
 
-	if len(found) != 1 {
-		t.Errorf("Wrong amount of contacts found")
+	if amount := len(found); amount != 1 {
+		t.Errorf("Wrong amount of contacts found = %d", amount)
 	}
 
-	if found[0].Name != "name" {
-		t.Errorf("Wrong contact found")
+	if con := found[0]; con.Name != "name" && con.Email != "email" {
+		t.Errorf("Wrong contact found = %+v", con)
 	}
 }
 
@@ -76,12 +76,12 @@ func TestFindContactByEmail(t *testing.T) {
 
 	found := addressbook.Find("email")
 
-	if len(found) != 1 {
-		t.Errorf("Wrong amount of contacts found")
+	if amount := len(found); amount != 1 {
+		t.Errorf("Wrong amount of contacts found = %d", amount)
 	}
 
-	if found[0].Name != "name" {
-		t.Errorf("Wrong contact found")
+	if con := found[0]; con.Name != "name" && con.Email != "email" {
+		t.Errorf("Wrong contact found = %+v", con)
 	}
 }
 
@@ -93,7 +93,7 @@ func TestNotFoundContact(t *testing.T) {
 	found := addressbook.Find("wrong name")
 
 	if len(found) > 0 {
-		t.Errorf("A contact has been found")
+		t.Errorf("A contact has been found: %s", found)
 	}
 }
 
@@ -102,7 +102,11 @@ func TestDeleteExistingContact(t *testing.T) {
 	contact := New("name", "email")
 	addressbook.Add(contact)
 
-	found, _ := addressbook.Delete("email")
+	found, err := addressbook.Delete("email")
+
+	if err != nil {
+		t.Errorf("Error returned: '%s'", err.Error())
+	}
 
 	if found == nil {
 		t.Errorf("No contact returned")
