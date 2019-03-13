@@ -37,15 +37,15 @@ func (addressBook *Addressbook) Find(nameOrEmail string) []Contact {
 	return foundContacts
 }
 
-func (addrBook *Addressbook) Delete(email string) *Contact {
+func (addrBook *Addressbook) Delete(email string) (*Contact, error) {
 	index, contact := addrBook.findFirst(email)
 
-	// Delete operation.
-	if contact != nil {
-		addrBook.Contacts = append(addrBook.Contacts[:index], addrBook.Contacts[index+1:]...)
+	if contact == nil {
+		return nil, errors.New("No contact found by email: " + email)
 	}
 
-	return contact
+	addrBook.Contacts = append(addrBook.Contacts[:index], addrBook.Contacts[index+1:]...)
+	return contact, nil
 }
 
 func (addressBook *Addressbook) findFirst(email string) (int, *Contact) {

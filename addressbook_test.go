@@ -102,7 +102,7 @@ func TestDeleteExistingContact(t *testing.T) {
 	contact := New("name", "email")
 	addressbook.Add(contact)
 
-	found := addressbook.Delete("email")
+	found, _ := addressbook.Delete("email")
 
 	if found == nil {
 		t.Errorf("No contact returned")
@@ -118,13 +118,17 @@ func TestDeleteNonExistingContact(t *testing.T) {
 	contact := New("name", "email")
 	addressbook.Add(contact)
 
-	found := addressbook.Delete("wrong name")
+	found, err := addressbook.Delete("wrong email")
 
 	if found != nil {
-		t.Errorf("A matching contact was found")
+		t.Errorf("Unexpected contact found: %+v", found)
 	}
 
-	if len(addressbook.Contacts) < 1 {
-		t.Errorf("A contact was deleted")
+	if msg := err.Error(); msg != "No contact found by email: wrong email" {
+		t.Errorf("Wrong error message = '%s'", msg)
+	}
+
+	if amount := len(addressbook.Contacts); amount != 1 {
+		t.Errorf("Unexpected amount of contacts in addressbook = %d", amount)
 	}
 }
