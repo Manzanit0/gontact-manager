@@ -1,8 +1,9 @@
 package main
 
 import "github.com/gin-gonic/gin"
+import "./addressbook"
 
-var addressbook = new(Addressbook)
+var addrbook = new(addressbook.Addressbook)
 
 func main() {
 	r := setupRouter()
@@ -18,6 +19,6 @@ func setupRouter() *gin.Engine {
 
 func listContacts(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": addressbook.Contacts,
+		"message": addrbook.Contacts,
 	})
 }
