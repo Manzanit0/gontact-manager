@@ -15,7 +15,7 @@ var router *gin.Engine
 
 func TestMain(m *testing.M) {
 	gin.SetMode(gin.TestMode)
-	router = setupRouter()
+	router = DefaultRouter()
 
 	retCode := m.Run()
 	os.Exit(retCode)
