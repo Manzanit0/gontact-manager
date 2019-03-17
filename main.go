@@ -12,7 +12,8 @@ func main() {
 
 func setupRouter() *gin.Engine {
 	r := gin.Default()
-	r.GET("/ping", listContacts)
+	r.GET("/list", listContacts)
+	r.POST("/add", addContact)
 
 	return r
 }
@@ -20,5 +21,15 @@ func setupRouter() *gin.Engine {
 func listContacts(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": addrbook.Contacts,
+	})
+}
+
+func addContact(c *gin.Context) {
+	var contact addressbook.Contact
+	c.BindJSON(&contact)
+	addrbook.Add(contact)
+	c.JSON(200, gin.H{
+		"name":  contact.Name,
+		"email": contact.Email,
 	})
 }
