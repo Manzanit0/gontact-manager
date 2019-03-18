@@ -1,9 +1,13 @@
 # Gontact Manager
 
 This project is a very simple contact manager application whose purpose is learn go.
+I wrote it as I was getting aquainted with the language and as such I've tried both
+to maintain the complexity as low as possible but at the same time, use as many features
+as possible.
 
-The application spawns up a gin server which allows users to add, edit, delete and
-list contacts in a generic addressbook.
+As for the application, it's an contact manager in the form of a HTTP server.
+It spawns up a [`gin`](https://github.com/gin-gonic/gin) server which allows users to
+add, edit, delete and list contacts in a generic addressbook.
 
 ## Getting started
 
@@ -49,9 +53,9 @@ if len(addressbook.Contacts) > 1 {
 ```
 
 The second interesting thing I learnt is that what determines a test from a non-test is the
-name: test functions are expected to start like `func TestXxx(*testing.T)`, camel-cased. As long as they
-have that structured, they will be run by the test runner and not built into the code by the
-compiler. That, and the file ending with a `_test.go`:
+name: test functions are expected to start like `func TestXxx(*testing.T)`, camel-cased.
+As long as they have that, they will be run by the test runner. If you come from Java,
+it's like adding the JUnit `@Test` tag to a method.
 
 ```go
 // web_test.go
@@ -59,6 +63,12 @@ func TestListContacts(t *testing.T) {
 	// Some code
 }
 ```
+
+
+Furthermore, in order for the compiler to pick up test files and package them separately,
+it must end with `_test.go`. As the documentation says,
+
+> Test files that declare a package with the suffix "_test" will be compiled as a separate package, and then linked and run with the main test binary.
 
 Apart from the naming of the tests, all test methods accept the parameter `t *testing.T`. It's
 basically a structure with all the testing utilities you might need – It contains methods to
