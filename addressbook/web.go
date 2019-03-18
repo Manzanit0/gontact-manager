@@ -24,7 +24,7 @@ func addContactHandler(c *gin.Context) {
 
 	db.Add(contact)
 
-	c.JSON(200, gin.H{
+	c.JSON(201, gin.H{
 		"name":  contact.Name,
 		"email": contact.Email,
 	})

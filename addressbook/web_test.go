@@ -66,8 +66,8 @@ func TestAddContacts(t *testing.T) {
 	var response Contact
 	parseBody(w, &response)
 
-	if w.Code != http.StatusOK {
-		t.Fatalf("Expected to get status %d but instead got %d\n", http.StatusOK, w.Code)
+	if w.Code != http.StatusCreated {
+		t.Fatalf("Expected to get status %d but instead got %d\n", http.StatusCreated, w.Code)
 	}
 
 	if name := response.Name; name != "Javier" {
