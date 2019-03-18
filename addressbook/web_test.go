@@ -1,6 +1,7 @@
 package addressbook
 
 import (
+	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -32,7 +33,8 @@ func TestListContacts(t *testing.T) {
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, req)
 
-	response := parseBody(w)
+	var response Addressbook
+	parseBody(w, &response)
 
 	if w.Code != http.StatusOK {
 		t.Fatalf("Expected to get status %d but instead got %d\n", http.StatusOK, w.Code)
@@ -51,10 +53,38 @@ func TestListContacts(t *testing.T) {
 	}
 }
 
-func parseBody(w *httptest.ResponseRecorder) Addressbook {
-	var response Addressbook
+func TestAddContacts(t *testing.T) {
+	post_data := []byte(`{"name": "Javier","email": "jgarcia@email.com"}`)
+	req, err := http.NewRequest(http.MethodPost, "/add", bytes.NewBuffer(post_data))
+	if err != nil {
+		t.Fatalf("Couldn't create request: %v\n", err)
+	}
+
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	var response Contact
+	parseBody(w, &response)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("Expected to get status %d but instead got %d\n", http.StatusOK, w.Code)
+	}
+
+	if name := response.Name; name != "Javier" {
+		t.Errorf("Expected: Javier, Received: %s", name)
+	}
+
+	if email := response.Email; email != "jgarcia@email.com" {
+		t.Errorf("Expected: jgarcia@email.com, Received: %s", email)
+	}
+}
+
+func readBody(w *httptest.ResponseRecorder) string {
 	body, _ := ioutil.ReadAll(w.Body)
-	stringBody := string(body)
-	json.Unmarshal([]byte(stringBody), &response)
-	return response
+	return string(body)
+}
+
+func parseBody(w *httptest.ResponseRecorder, response interface{}) {
+	body := readBody(w)
+	json.Unmarshal([]byte(body), &response)
 }
